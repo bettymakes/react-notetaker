@@ -3,7 +3,7 @@ var Router        = require('react-router');
 var Repos         = require('./github/repos');
 var UserProfile   = require('./github/userProfile');
 var Notes         = require('./notes/notes');
-var ReactFireMixin = require('reactfire');
+var ReactFireMixin = require('reactfire'); // Need to use reactfire@0.4.0, new version causes problems w/ tutorial
 var Firebase      = require('firebase');
 
 var Profile = React.createClass({
