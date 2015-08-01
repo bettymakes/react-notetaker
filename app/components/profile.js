@@ -5,6 +5,7 @@ var UserProfile   = require('./github/userProfile');
 var Notes         = require('./notes/notes');
 var ReactFireMixin = require('reactfire'); // Need to use reactfire@0.4.0, new version causes problems w/ tutorial
 var Firebase      = require('firebase');
+var helpers       = require('../utils/helpers');
 
 var Profile = React.createClass({
   mixins: [Router.State, ReactFireMixin],
@@ -22,6 +23,14 @@ var Profile = React.createClass({
     this.ref = new Firebase('https://burning-torch-3051.firebaseio.com/');
     var childRef = this.ref.child(this.getParams().username);
     this.bindAsArray(childRef, 'notes');
+
+    helpers.getGithubInfo(this.getParams().username)
+      .then(function(dataObj){
+        this.setState({
+          bio: dataObj.bio,
+          repos: dataObj.repos
+        })
+      }.bind(this));
   },
   componentWillUnmount: function() {
     // Removes the listener on notes when component has moved on
