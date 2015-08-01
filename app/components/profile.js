@@ -1,11 +1,13 @@
 var React         = require('react');
 var Router        = require('react-router');
 var Repos         = require('./github/repos');
-var UserProfile  = require('./github/userProfile');
+var UserProfile   = require('./github/userProfile');
 var Notes         = require('./notes/notes');
+var ReactFireMixin = require('reactfire');
+var Firebase      = require('firebase');
 
 var Profile = React.createClass({
-  mixins: [Router.State],
+  mixins: [Router.State, ReactFireMixin],
   getInitialState: function(){
     return {
       notes: ['noteUno', 'noteDos'],
@@ -14,6 +16,16 @@ var Profile = React.createClass({
       },
       repos: ['someRepo', 'otherRepo', "repo3"]
     }
+  },
+  componentDidMount: function(){
+    // this life cycle event (componentDidMount fn) gets called when component mounts the view
+    this.ref = new Firebase('https://burning-torch-3051.firebaseio.com/');
+    var childRef = this.ref.child(this.getParams().username);
+    this.bindAsArray(childRef, 'notes');
+  },
+  componentWillUnmount: function() {
+    // Removes the listener on notes when component has moved on
+    this.unbind('notes');
   },
   render: function() {
     var username = this.getParams().username;
