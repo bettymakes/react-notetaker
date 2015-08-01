@@ -38,7 +38,7 @@ var UserProfile = React.createClass({
             <li className="list-group-item">Public Repos: {this.props.bio.public_repos}</li>
           }
           {this.props.bio.blog && 
-            <li className="list-group-item">Blog: <a href={this.props.bio.blog}></a></li>
+            <li className="list-group-item">Blog: <a href={this.props.bio.blog}>{this.props.bio.blog}</a></li>
           }
         </ul>
       </div>

@@ -18,9 +18,7 @@ var Profile = React.createClass({
       repos: ['someRepo', 'otherRepo', "repo3"]
     }
   },
-  componentDidMount: function(){
-    // this life cycle event (componentDidMount fn) gets called when component mounts the view
-    this.ref = new Firebase('https://burning-torch-3051.firebaseio.com/');
+  init: function(){
     var childRef = this.ref.child(this.getParams().username);
     this.bindAsArray(childRef, 'notes');
 
@@ -31,6 +29,15 @@ var Profile = React.createClass({
           repos: dataObj.repos
         })
       }.bind(this));
+  },
+  componentDidMount: function(){
+    // this life cycle event (componentDidMount fn) gets called when component mounts the view
+    this.ref = new Firebase('https://burning-torch-3051.firebaseio.com/');
+    this.init();
+  },
+  componentWillReceiveProps: function(){
+    this.unbind('notes');
+    this.init();
   },
   componentWillUnmount: function() {
     // Removes the listener on notes when component has moved on

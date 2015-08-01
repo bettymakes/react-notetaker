@@ -5,7 +5,7 @@ var SearchGithub = React.createClass({
   mixins: [Router.Navigation],
   handleSubmit: function(){
     var username = this.refs.username.getDOMNode().value;
-    this.refs.username.getDOMNode.value = "";
+    this.refs.username.getDOMNode().value = "";
     this.transitionTo('profile', {username: username});
   },
   render: function(){

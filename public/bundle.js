@@ -23613,7 +23613,7 @@
 	  mixins: [Router.Navigation],
 	  handleSubmit: function handleSubmit() {
 	    var username = this.refs.username.getDOMNode().value;
-	    this.refs.username.getDOMNode.value = "";
+	    this.refs.username.getDOMNode().value = "";
 	    this.transitionTo('profile', { username: username });
 	  },
 	  render: function render() {
@@ -23694,9 +23694,7 @@
 	      repos: ['someRepo', 'otherRepo', "repo3"]
 	    };
 	  },
-	  componentDidMount: function componentDidMount() {
-	    // this life cycle event (componentDidMount fn) gets called when component mounts the view
-	    this.ref = new Firebase('https://burning-torch-3051.firebaseio.com/');
+	  init: function init() {
 	    var childRef = this.ref.child(this.getParams().username);
 	    this.bindAsArray(childRef, 'notes');
 
@@ -23706,6 +23704,15 @@
 	        repos: dataObj.repos
 	      });
 	    }).bind(this));
+	  },
+	  componentDidMount: function componentDidMount() {
+	    // this life cycle event (componentDidMount fn) gets called when component mounts the view
+	    this.ref = new Firebase('https://burning-torch-3051.firebaseio.com/');
+	    this.init();
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps() {
+	    this.unbind('notes');
+	    this.init();
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    // Removes the listener on notes when component has moved on
@@ -23991,7 +23998,11 @@
 	          "li",
 	          { className: "list-group-item" },
 	          "Blog: ",
-	          React.createElement("a", { href: this.props.bio.blog })
+	          React.createElement(
+	            "a",
+	            { href: this.props.bio.blog },
+	            this.props.bio.blog
+	          )
 	        )
 	      )
 	    );
