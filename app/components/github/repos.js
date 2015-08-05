@@ -7,14 +7,17 @@ var Repos = React.createClass({
   },  
   render: function(){
     var repos = this.props.repos.map(function(repo, index){
-    console.log("repos arr", repos);
       return (
-        <li className="list-group-item" key={index}>
+        <li className="list-group-item clearfix" key={index}>
           {repo.html_url && <h4><a href={repo.html_url}>{repo.name}</a></h4>}
           {repo.description && <p>{repo.description}</p>}
+          <span className="pull-right">
+            Starred: {repo.watchers}
+          </span>
         </li>
       )
-    });
+    });  
+    console.log('repos man',repos);
     return (
       <div>
         <h3>User Repos</h3>
